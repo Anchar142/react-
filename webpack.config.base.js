@@ -1,7 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const WebpackBar = require('webpackbar');
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const WebpackBar = require("webpackbar");
 
 module.exports = {
   entry: {
@@ -30,9 +30,7 @@ module.exports = {
       chunks: ["one"], //chunks指定需要引入的入口模块的键名 one:"./src/one.js"
     }),
     new CleanWebpackPlugin(),
-    new WebpackBar()
-
-
+    new WebpackBar(),
   ],
   module: {
     rules: [
@@ -50,29 +48,30 @@ module.exports = {
         test: /\.(png|jpe?g|gif)$/,
         use: [
           {
-            loader: 'url-loader',
+            loader: "url-loader",
             options: {
               limit: 8192,
-              publicPath: './../img',
-              outputPath: 'img/'
+              publicPath: "./../img",
+              outputPath: "img/",
             },
           },
         ],
       },
       {
         test: /\.(ttf|eot|svg|woff|woff2)$/,
-        loader: 'file-loader',
+        loader: "file-loader",
         options: {
-        name: '[name].[ext]',
-        publicPath: './../fonts',
-        outputPath: 'fonts/' 
+          name: "[name].[ext]",
+          publicPath: "./../fonts",
+          outputPath: "fonts/",
         },
-        },
-        
+      },
     ],
   },
-  resolve:{
-    extensions:['.jsx','.less','.js','.css']
+  resolve: {
+    extensions: [".jsx", ".less", ".js", ".css"],
+    alias: {
+      "@": path.join(__dirname, "./src"),
+    },
   },
-
 };
