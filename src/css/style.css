@@ -1,7 +1,11 @@
-.special{
-    background: #09f;
-    color:#fff;
+ul {
+  border: 2px solid #dd0;
+  width: 400px;
+  height: 400px;
 }
-.one{
-    background:#090;
+ul.load {
+  /* border: 2px solid #dd0;
+  width: 400px;
+  height: 400px; */
+  background: url(./../img/1.gif) no-repeat 50% 50%;
 }

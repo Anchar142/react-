@@ -2,19 +2,19 @@ import React, { Component } from "react";
 
 export default class Footer extends Component {
   render() {
-    let { num, view, edittodo, cleartodo } = this.props;
+    let { num, saitodo, view, cleartodo } = this.props;
     return (
       <footer className="footer">
         <span className="todo-count">
           <strong>{num}</strong>
-          <span> item left</span>
+          <span> {num > 1 ? "items left" : "item left"}</span>
         </span>
         <ul className="filters">
           <li>
             <a
               href="#/all"
               onClick={() => {
-                edittodo("all");
+                saitodo("all");
               }}
               className={view == "all" ? "selected" : ""}
             >
@@ -25,7 +25,7 @@ export default class Footer extends Component {
             <a
               href="#/active"
               onClick={() => {
-                edittodo("active");
+                saitodo("active");
               }}
               className={view == "active" ? "selected" : ""}
             >
@@ -36,7 +36,7 @@ export default class Footer extends Component {
             <a
               href="#/completed"
               onClick={() => {
-                edittodo("completed");
+                saitodo("completed");
               }}
               className={view == "completed" ? "selected" : ""}
             >
@@ -45,7 +45,7 @@ export default class Footer extends Component {
           </li>
         </ul>
         <button className="clear-completed" onClick={cleartodo}>
-          Clear completed
+          Cleat Completed
         </button>
       </footer>
     );

@@ -1,23 +1,18 @@
-import React, { Component } from "react";
+import React, { Component, createRef } from "react";
 
-export default class componentName extends Component {
-  state = {
-    view: false,
-  };
-  myInput = React.createRef();
-  dblclick = () => {
-    let { todo } = this.props;
-    this.setState({ view: true }, () => {
-      (this.myInput.current.value = todo.title), this.myInput.current.focus();
-    });
-  };
+export default class Item extends Component {
+  constructor() {
+    super();
+    this.state = {
+      view: false,
+    };
+    this.myInput = React.createRef();
+  }
   render() {
-    let { todo, deltodo, xgtodo, chantodo } = this.props;
-    let { dblclick } = this;
+    let { todo, deltodo, xxtodo, chantodo } = this.props;
     let { view } = this.state;
     let completed = todo.hasCompleted ? "completed" : "";
     let cla = view ? completed + " editing" : completed;
-
     return (
       <li className={cla}>
         <div className="view">
@@ -29,7 +24,16 @@ export default class componentName extends Component {
             }}
             checked={todo.hasCompleted}
           />
-          <label onDoubleClick={dblclick}>{todo.title}</label>
+          <label
+            onDoubleClick={() => {
+              this.setState({ view: true }, () => {
+                this.myInput.current.value = todo.title;
+                this.myInput.current.focus();
+              });
+            }}
+          >
+            {todo.title}
+          </label>
           <button
             className="destroy"
             onClick={() => {
@@ -43,16 +47,21 @@ export default class componentName extends Component {
           ref={this.myInput}
           onBlur={() => {
             if (view) {
-              todo.title = this.myInput.current.value.trim();
+              todo.title = this.myInput.current.value;
+              xxtodo(todo);
               this.setState({ view: false });
             }
           }}
           onKeyUp={(e) => {
+            console.log(e.key);
             if (e.key == "Enter") {
-              todo.title = this.myInput.current.value.trim();
+              console.log("keyup");
+              todo.title = this.myInput.current.value;
+              xxtodo(todo);
               this.setState({ view: false });
             }
             if (e.key == "Escape") {
+              console.log("Escape");
               this.setState({ view: false });
             }
           }}
