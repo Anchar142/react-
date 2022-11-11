@@ -2,50 +2,56 @@ import axios from "axios";
 import classNames from "classnames";
 import React, { Component } from "react";
 import Style from "@/css/Style";
-import "@/mock/data2.js";
 
 export default class App extends Component {
   state = {
     stus: [],
     view: false,
   };
-  click = () => {
-    this.setState({ stus: [], view: true });
-    let url = new URLSearchParams();
-    url.append("name", "车车");
-    url.append("age", 11);
-    axios({
-      url: "data.php",
-      method: "post",
-      data: url,
-    }).then((res) => {
-      this.setState({
-        stus: res.data.data,
-        view: false,
-      });
-    });
-  };
-
+  getstus1 = () => [
+    axios.get("data.php").then((res) => {
+      this.setState({ stus: res.data.data });
+    }),
+  ];
+  getstus2 = () => [
+    axios.get("data2.php").then((res) => {
+      this.setState({ stus: res.data.data });
+    }),
+  ];
   render() {
     let { stus, view } = this.state;
     let classes = classNames(Style.one, { [Style.load]: view });
     return (
       <div>
-        <h3>aioxs post方法传送urlencoded数据</h3>
-        <button onClick={this.click}>点击发送请求</button>
+        <h2>axios 通过拦截器get方法分别请求数据</h2>
+        <button onClick={this.getstus1}>点击请求数据</button>
+        <button onClick={this.getstus2}>点击请求数据</button>
         <ul className={classes}>
           {stus.map((value) => {
             return (
               <li key={value.id}>
                 学号:{value.id}
                 姓名:{value.name}
-                性别：{value.sex}
                 年龄:{value.age}
+                性别:{value.sex}
               </li>
             );
           })}
         </ul>
       </div>
     );
+  }
+  componentDidMount() {
+    console.log(axios.interceptors.request);
+    axios.interceptors.request.use((config) => {
+      console.log("request", config);
+      this.setState({ stus: [], view: true });
+      return config;
+    });
+    axios.interceptors.response.use((config) => {
+      console.log("response", config);
+      this.setState({ view: false });
+      return config;
+    });
   }
 }

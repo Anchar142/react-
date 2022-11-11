@@ -10,7 +10,7 @@ Mock.mock("data1.php", "get", {
     {
       "id|+1": 10,
       "name|1": ["@cname"],
-      "age|1": 0,
+      "age|10-20": 0,
       "sex|1": ["男", "女"],
     },
   ],
