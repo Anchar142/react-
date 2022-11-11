@@ -5,12 +5,12 @@ const Mock = require("mockjs");
 Mock.setup({ timeout: "2000" });
 
 //书写数据模板
-Mock.mock("data1.php", "get", {
+Mock.mock("data2.php", "get", {
   "data|1-10": [
     {
       "id|+1": 10,
       "name|1": ["@cname"],
-      "age|1": 0,
+      "age|19-50": 0,
       "sex|1": ["男", "女"],
     },
   ],

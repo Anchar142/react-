@@ -16,7 +16,7 @@ module.exports = merge(base, {
           {
             loader: "css-loader",
             options: {
-              modules: false,
+              modules: true,
             },
           },
         ],

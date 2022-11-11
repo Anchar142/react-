@@ -1,38 +1,61 @@
+import classNames from "classnames";
 import React, { Component } from "react";
-import $ from "jquery";
-import "./css/style";
+import Style from "@/css/Style";
+import axios from "axios";
+import "@/mock/data.js";
+import "@/mock/data3.js";
 
-export default class componentName extends Component {
+export default class App extends Component {
   state = {
-    text: [],
+    stus1: [],
+    stus2: [],
     view: false,
   };
-
-  hh = () => [
-    this.setState({ view: true }),
-    $.ajax({
-      url: "data.php",
-      dataType: "json",
-      success: (data) => {
-        this.setState({ text: data.data, view: false });
-      },
-    }),
-  ];
+  hasddleclick = () => {
+    this.setState({
+      stus1: [],
+      stus2: [],
+      view: true,
+    });
+    axios.patch([axios.get("data.php"), axios.get("data2.php")]).then(
+      axios.spread((res1, res2) => {
+        console.log(res1.data.data);
+        console.log(res2.data.data);
+        this.setState({
+          stus1: res1.data.data,
+          stus2: res2.data.data,
+          view: false,
+        });
+      })
+    );
+  };
   render() {
-    let { text, view } = this.state;
-    let { hh } = this;
-    let cla = view ? "load" : "";
+    let { stus1, stus2, view } = this.state;
+    let classes = classNames(Style.one, { [Style.load]: view });
     return (
       <div>
-        <button onClick={hh}>点击获取json</button>
-        <ul className={cla}>
-          {text.map((value) => {
+        <h3>axios同时发送多个请求</h3>
+        <button onClick={this.hasddleclick}>点击发送请求</button>
+        <ul className={classes}>
+          {stus1.map((value) => {
             return (
               <li key={value.id}>
                 学号:{value.id}
                 姓名:{value.name}
-                年龄:{value.age}
-                性别:{value.sex}
+                性别:{value.age}
+                年龄:{value.sex}
+              </li>
+            );
+          })}
+        </ul>
+        <ul className={classes}>
+          {stus2.map((value) => {
+            return (
+              <li key={value.id}>
+                学号:{value.id}
+                姓名:{value.name}
+                性别:{value.age}
+                年龄:{value.sex}
               </li>
             );
           })}
