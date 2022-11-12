@@ -1,31 +1,50 @@
 import axios from "axios";
 import React, { Component } from "react";
+import base_url from "@/config.js";
+import classNames from "classnames";
 
 export default class App extends Component {
   state = {
-    email: "",
-    success: true,
-    errormessage: "",
+    msg: "",
+    view: false,
   };
-  render() {
-    let { success, errormessage, email } = this.state;
-    return <div>{success ? <p>email:{email}</p> : <p>{errormessage}</p>}</div>;
-  }
-  componentDidMount() {
+  userName = React.createRef();
+  passWord = React.createRef();
+  tips = React.createRef();
+  haddleclick = () => {
+    console.log(this.userName.current.value);
+    console.log(this.passWord.current.value);
+    let { view } = this.state;
     axios
-      .get("https://randomuser.me/api")
+      .post(`${base_url}/login1`, {
+        userName: this.userName.current.value,
+        passWord: this.passWord.current.value,
+      })
       .then((res) => {
         console.log(res);
-        this.setState({
-          email: res.data.results[0].email,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        this.setState({
-          success: false,
-          errormessage: error.reponse.data,
-        });
+        if (res.data.info.code == "10001") {
+          view = true;
+        } else {
+          view = false;
+        }
+        this.setState({ msg: res.data.info.msg, view });
       });
+  };
+  render() {
+    let { msg, view } = this.state;
+    let classes = view ? { color: "" } : { color: "red" };
+    return (
+      <div>
+        <h3>axios post发送json数据实现登录验证</h3>
+        <label htmlFor="userName">用户名:</label>
+        <input type="text" id="userName" ref={this.userName} />
+        <label htmlFor="passWord">密码:</label>
+        <input type="password" id="passWord" ref={this.passWord} />
+        <div ref={this.tips} style={classes}>
+          {msg}
+        </div>
+        <button onClick={this.haddleclick}>点击登录</button>
+      </div>
+    );
   }
 }

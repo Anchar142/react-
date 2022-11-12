@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 
-export default class componentName extends Component {
+export default class Footer extends Component {
   render() {
-    let { num, view, sstodo, cleartodo } = this.props;
+    let { num, viewtodo, view, cleartodo } = this.props;
     return (
       <footer className="footer">
         <span className="todo-count">
           <strong>{num}</strong>
-          <span> item left</span>
+          <span> {num >= 1 ? "items left" : "item left"}</span>
         </span>
         <ul className="filters">
           <li>
             <a
               href="#/all"
               onClick={() => {
-                sstodo("all");
+                viewtodo("all");
               }}
               className={view == "all" ? "selected" : ""}
             >
@@ -25,7 +25,7 @@ export default class componentName extends Component {
             <a
               href="#/active"
               onClick={() => {
-                sstodo("active");
+                viewtodo("active");
               }}
               className={view == "active" ? "selected" : ""}
             >
@@ -36,7 +36,7 @@ export default class componentName extends Component {
             <a
               href="#/completed"
               onClick={() => {
-                sstodo("completed");
+                viewtodo("completed");
               }}
               className={view == "completed" ? "selected" : ""}
             >
@@ -45,7 +45,7 @@ export default class componentName extends Component {
           </li>
         </ul>
         <button className="clear-completed" onClick={cleartodo}>
-          Clear Completed
+          Cleat-completed
         </button>
       </footer>
     );

@@ -1,29 +1,30 @@
+import classNames from "classnames";
 import React, { Component } from "react";
 
 export default class Item extends Component {
   state = { view: false };
-  edit = React.createRef();
+  myInput = React.createRef();
   render() {
+    let { todo, deltodo, changetodo, xxtodo } = this.props;
     let { view } = this.state;
-    let { todo, deltodo, todostate, edittodo } = this.props;
-    let completed = todo.hasCompleted ? "completed" : "";
-    let cla = view ? completed + " editing" : completed;
+    // let clas = todo.hasCompleted ? "completed" : "";
+    let cls = classNames({ completed: todo.hasCompleted }, { editing: view });
     return (
-      <li className={cla}>
+      <li className={cls}>
         <div className="view">
           <input
             type="checkbox"
             className="toggle"
             onChange={() => {
-              todostate(todo);
+              changetodo(todo);
             }}
             checked={todo.hasCompleted}
           />
           <label
             onDoubleClick={() => {
               this.setState({ view: true }, () => {
-                this.edit.current.value = todo.title;
-                this.edit.current.focus();
+                this.myInput.current.focus();
+                this.myInput.current.value = todo.title;
               });
             }}
           >
@@ -39,27 +40,18 @@ export default class Item extends Component {
         <input
           type="text"
           className="edit"
-          ref={this.edit}
-          onBlur={(e) => {
-            console.log(e.target);
+          ref={this.myInput}
+          onBlur={() => {
             if (view) {
-              if (e.target.value == "") {
-                deltodo(todo);
-              } else {
-                todo.title = this.edit.current.value;
-                edittodo(todo);
-                this.setState({ view: false });
-              }
+              todo.title = this.myInput.current.value;
+              xxtodo(todo);
+              this.setState({ view: false });
             }
           }}
           onKeyUp={(e) => {
-            console.log(e.key);
             if (e.key == "Enter") {
-              todo.title = this.edit.current.value;
-              edittodo(todo);
-              if (e.target.value == "") {
-                deltodo(todo);
-              }
+              todo.title = this.myInput.current.value;
+              xxtodo(todo);
               this.setState({ view: false });
             }
             if (e.key == "Escape") {
